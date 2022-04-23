@@ -1,10 +1,10 @@
 'use strict';
 const bycrpt = require('bcryptjs');
-
 module.exports = {
   async up (queryInterface, Sequelize) {
   
-     const password = bycrpt.hashSync('alif',10);
+     const password = bycrpt.hashSync('rahasia',10);
+
       await queryInterface.bulkInsert('Users', [
       {
         name: 'Kasir Toko',
