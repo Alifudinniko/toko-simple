@@ -34,5 +34,40 @@ module.exports= {
             console.log(err);
             next(err);
         }
+    },
+
+    signup : async (req, res, next) =>{
+        try {
+            const {name, email, password, confirmPassword }= req.body;
+            if (password !== confirmPassword){
+                res 
+                .status(403)
+                .json({message :"Password and password Confirmation dont match"});
+            }
+            const checkEmail = await User.findOne({where : {email:email}})
+            if (checkEmail){
+                return res.status(403).json({ message: "Email registered"})
+            }
+
+            const user = await User.create(
+                {
+                    name,
+                    email,
+                    password : bycrpt.hashSync(password,10),
+                    role:"admin"
+                }
+            );
+
+
+            delete user.dataValues.password;
+            
+            res.status(201).json({
+                message : "Success Signup",
+                data : user
+            });
+
+        } catch (err){
+            next(err);
+        }
     }
 }
