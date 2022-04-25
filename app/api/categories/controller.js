@@ -49,5 +49,56 @@ module.exports= {
         }catch(err){
             next(err);
         }
+    },
+    updateOne: async (req,res,next) => {
+        try {
+            const {id} = req.params;
+            const {name} =req.body;
+
+            const checkCategory = await Category.findOne(
+                {
+                    where :{
+                        id:id,
+                        user: req.user.id
+                    }
+                }
+            )
+
+            const categories = await checkCategory.update(
+                {
+                    name:name
+                }
+               
+            )
+            res.status(200).json({
+                message : "Success update category",
+                data: categories,
+                params: req.params
+            })
+        }catch(err){
+            res.status(500).json({
+                 message : "data tidak ditemukan atau salah",
+            })
+            next(err);
+        }
+    },
+    deleteOne: (req, res, next) =>{
+        Category
+            .findOne({
+                where :{
+                    id:req.params.id,
+                    user: req.user.id
+                }
+            })
+            .then((categories) =>{
+                if(categories){
+                    categories.destroy();
+                    res.status(200).json({
+                        message : "Success delete category",
+                        data: categories,
+                    })
+                }
+            })
+            .catch((err)=> next(err));
     }
 }
