@@ -7,7 +7,8 @@ module.exports= {
     getAll : async (req, res,next) =>{
         try {
             const categories = await Category.findAll({
-                where : {user : req.user.id}
+                where : {user : req.user.id},
+                attributes: ['id','name']
             });
             
             res.status(200).json({

@@ -6,6 +6,7 @@ const logger = require('morgan');
 
 const authRouter = require('./app/api/auth/router');
 const categoriesRouter = require('./app/api/categories/router');
+const itemRouter = require('./app/api/item/router');
 
 const URL= `/api/v1`;
 
@@ -21,5 +22,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(`${URL}`, authRouter);
 app.use(`${URL}`, categoriesRouter);
+app.use(`${URL}`, itemRouter);
 
 module.exports = app;
